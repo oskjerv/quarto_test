@@ -1,0 +1,114 @@
+---
+title: "test_ojs"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+editor: visual
+---
+
+## Gjennomsnittspersonen
+
+Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.
+
+Det er laget med Quarto, og Observable JS. 
+
+## Running Code
+
+Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker. 
+
+I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen. 
+
+```{r echo=FALSE, message=FALSE, warnings=FALSE}
+
+library(tidyverse)
+
+df <- read_csv2("data/07459_20240201-095258.csv")
+
+df <- 
+  df |> 
+  mutate(
+    region = iconv(region, "latin1", "utf-8"),
+    alder = as.numeric(str_replace(alder," .*$", "")),
+    kommnr = str_replace(region, " .*$", ""),
+    kommnavn = str_replace(region, ".*? ", "")
+  ) |> 
+  rename(n = Persone)
+
+ojs_define(data = df)
+
+
+
+```
+
+```{ojs}
+//| output: false
+
+filtered = transpose(data).filter(function(komm) {
+  return alder_min < komm.alder &&
+         kommuner.includes(komm.kommnr);
+})
+
+```
+
+
+Hei!
+
+```{ojs}
+#| .sidebar
+
+viewof alder_min = Inputs.range(
+  [0, 100], 
+  {value: 0, step: 1, label: "Alder min:"}
+)
+
+viewof kommuner = Inputs.checkbox(
+  ["K-3101", "K-3105", "K-3118"], 
+  { value: ["K-3101", "K-3105", "K-3118"], 
+    label: "Kommuner:"
+  }
+)
+
+
+```
+
+## Plot
+
+```{ojs}
+#| echo:false
+
+
+Plot.plot({
+  marginBottom: 60,
+  x: {
+    tickRotate: -30,
+  },
+  //y: {
+  //  transform: (d) => d / 1000,
+  //  label: "↑ Market value (US dollars, billions)",
+  //  grid: 5
+  //},
+  facet: {
+      data: filtered,
+      x: "kjonn",
+      y: "kommnr",
+      marginRight: 80
+    },
+  marks: [
+    Plot.ruleY([0]),
+    
+    Plot.barY(filtered, {
+      x: "alder",
+      y: "n",
+      sort: { x: "y", reverse: true, limit: 20 },
+      fill: "steelblue"
+    }),
+  ]
+})
+```
+
+# Tabell
+
+```{ojs}
+Inputs.table(filtered)
+```
