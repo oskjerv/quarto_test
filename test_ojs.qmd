@@ -2,8 +2,10 @@
 title: "Test av distribusjonsmetode"
 format:
   html:
-    code-fold: true
+    code-fold: false
     code-tools: true
+execute:
+  echo: false
 editor: visual
 ---
 
@@ -31,13 +33,32 @@ df <-
     kommnr = str_replace(region, " .*$", ""),
     kommnavn = str_replace(region, ".*? ", "")
   ) |> 
-  rename(n = Persone)
+  rename(n = Persone) |> 
+  group_by(kommnr, kjonn) |> 
+  mutate(
+    pct = n/sum(n)
+  ) |> 
+  ungroup()
+
+averages <- 
+  df |> 
+  mutate(
+    age_sum = n * alder,
+  ) |> 
+  group_by(kommnr, kommnavn, kjonn) |> 
+  mutate(
+    age_mean = round(sum(age_sum)/sum(n),1),
+  ) |> 
+  distinct(age_mean) |> 
+  ungroup()
 
 all_komms <- 
   df |> 
   distinct(kommnr, kommnavn)
 
 ojs_define(data = df)
+
+ojs_define(data_averages = averages)
 
 ojs_define(all_komms = all_komms)
 
@@ -49,10 +70,13 @@ ojs_define(all_komms = all_komms)
 ```{ojs}
 //| output: false
 
-console.log(all_komms)
-
 filtered = transpose(data).filter(function(komm) {
   return alder_min < komm.alder &&
+         kommuner.includes(komm.kommnavn);
+})
+
+filtered_averages = transpose(data_averages).filter(function(komm) {
+  return alder_min < komm.age_mean &&
          kommuner.includes(komm.kommnavn);
 })
 
@@ -97,7 +121,7 @@ Plot.plot({
   facet: {
       data: filtered,
       x: "kjonn",
-      y: "kommnr",
+      y: "kommnavn",
       marginRight: 80
     },
   marks: [
@@ -105,7 +129,7 @@ Plot.plot({
     
     Plot.barY(filtered, {
       x: "alder",
-      y: "n",
+      y: "pct",
       sort: { x: "y", reverse: true, limit:  100},
       fill: "steelblue"
     }),
@@ -116,5 +140,5 @@ Plot.plot({
 # Tabell
 
 ```{ojs}
-Inputs.table(filtered)
+Inputs.table(filtered_averages)
 ```
