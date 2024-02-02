@@ -1,5 +1,5 @@
 ---
-title: "test_ojs"
+title: "Test av distribusjonsmetode"
 format:
   html:
     code-fold: true
@@ -12,8 +12,6 @@ editor: visual
 Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.
 
 Det er laget med Quarto, og Observable JS.
-
-## Running Code
 
 Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.
 
@@ -35,8 +33,15 @@ df <-
   ) |> 
   rename(n = Persone)
 
+all_komms <- 
+  df |> 
+  distinct(kommnr, kommnavn)
+
 ojs_define(data = df)
 
+ojs_define(all_komms = all_komms)
+
+#print(all_komms)
 
 
 ```
@@ -44,14 +49,14 @@ ojs_define(data = df)
 ```{ojs}
 //| output: false
 
+console.log(all_komms)
+
 filtered = transpose(data).filter(function(komm) {
   return alder_min < komm.alder &&
-         kommuner.includes(komm.kommnr);
+         kommuner.includes(komm.kommnavn);
 })
 
 ```
-
-Hei!
 
 ```{ojs}
 #| .sidebar
@@ -61,10 +66,12 @@ viewof alder_min = Inputs.range(
   {value: 0, step: 1, label: "Alder min:"}
 )
 
-viewof kommuner = Inputs.checkbox(
-  ["K-3101", "K-3105", "K-3118"], 
-  { value: ["K-3101", "K-3105", "K-3118"], 
-    label: "Kommuner:"
+viewof kommuner = Inputs.select(
+  all_komms.kommnavn, 
+  { label: "Kommuner:",
+    multiple: true,
+    value: "K-3101"
+    //format: x => x.name, value: teams.find(t => t.name === "K-4601")
   }
 )
 
@@ -99,7 +106,7 @@ Plot.plot({
     Plot.barY(filtered, {
       x: "alder",
       y: "n",
-      sort: { x: "y", reverse: true, limit: 20 },
+      sort: { x: "y", reverse: true, limit:  100},
       fill: "steelblue"
     }),
   ]

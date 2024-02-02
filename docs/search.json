@@ -2,29 +2,22 @@
   {
     "objectID": "test_ojs.html",
     "href": "test_ojs.html",
-    "title": "test_ojs",
+    "title": "Test av distribusjonsmetode",
     "section": "",
-    "text": "Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.\nDet er laget med Quarto, og Observable JS."
+    "text": "Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.\nDet er laget med Quarto, og Observable JS.\nLøsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.\nI dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.\n\n\nCode\nconsole.log(all_komms)\n\n\n\n\n\n\n\n\n\nCode\nfiltered = transpose(data).filter(function(komm) {\n  return alder_min &lt; komm.alder &&\n         kommuner.includes(komm.kommnavn);\n})\n\n\n\n\n\n\n\n\n\n\n\nCode\nviewof alder_min = Inputs.range(\n  [0, 100], \n  {value: 0, step: 1, label: \"Alder min:\"}\n)\n\nviewof kommuner = Inputs.select(\n  all_komms.kommnavn, \n  { label: \"Kommuner:\",\n    multiple: true,\n    value: \"K-3101\"\n    //format: x =&gt; x.name, value: teams.find(t =&gt; t.name === \"K-4601\")\n  }\n)"
   },
   {
     "objectID": "test_ojs.html#gjennomsnittspersonen",
     "href": "test_ojs.html#gjennomsnittspersonen",
-    "title": "test_ojs",
+    "title": "Test av distribusjonsmetode",
     "section": "",
-    "text": "Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.\nDet er laget med Quarto, og Observable JS."
-  },
-  {
-    "objectID": "test_ojs.html#running-code",
-    "href": "test_ojs.html#running-code",
-    "title": "test_ojs",
-    "section": "Running Code",
-    "text": "Running Code\nLøsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.\nI dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.\n\n\nCode\nfiltered = transpose(data).filter(function(komm) {\n  return alder_min &lt; komm.alder &&\n         kommuner.includes(komm.kommnr);\n})\n\n\n\n\n\n\n\nHei!\n\n\nCode\nviewof alder_min = Inputs.range(\n  [0, 100], \n  {value: 0, step: 1, label: \"Alder min:\"}\n)\n\nviewof kommuner = Inputs.checkbox(\n  [\"K-3101\", \"K-3105\", \"K-3118\"], \n  { value: [\"K-3101\", \"K-3105\", \"K-3118\"], \n    label: \"Kommuner:\"\n  }\n)"
+    "text": "Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.\nDet er laget med Quarto, og Observable JS.\nLøsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.\nI dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.\n\n\nCode\nconsole.log(all_komms)\n\n\n\n\n\n\n\n\n\nCode\nfiltered = transpose(data).filter(function(komm) {\n  return alder_min &lt; komm.alder &&\n         kommuner.includes(komm.kommnavn);\n})\n\n\n\n\n\n\n\n\n\n\n\nCode\nviewof alder_min = Inputs.range(\n  [0, 100], \n  {value: 0, step: 1, label: \"Alder min:\"}\n)\n\nviewof kommuner = Inputs.select(\n  all_komms.kommnavn, \n  { label: \"Kommuner:\",\n    multiple: true,\n    value: \"K-3101\"\n    //format: x =&gt; x.name, value: teams.find(t =&gt; t.name === \"K-4601\")\n  }\n)"
   },
   {
     "objectID": "test_ojs.html#plot",
     "href": "test_ojs.html#plot",
-    "title": "test_ojs",
+    "title": "Test av distribusjonsmetode",
     "section": "Plot",
-    "text": "Plot\n\n\nCode\nPlot.plot({\n  marginBottom: 60,\n  x: {\n    tickRotate: -30,\n  },\n  //y: {\n  //  transform: (d) =&gt; d / 1000,\n  //  label: \"↑ Market value (US dollars, billions)\",\n  //  grid: 5\n  //},\n  facet: {\n      data: filtered,\n      x: \"kjonn\",\n      y: \"kommnr\",\n      marginRight: 80\n    },\n  marks: [\n    Plot.ruleY([0]),\n    \n    Plot.barY(filtered, {\n      x: \"alder\",\n      y: \"n\",\n      sort: { x: \"y\", reverse: true, limit: 20 },\n      fill: \"steelblue\"\n    }),\n  ]\n})"
+    "text": "Plot\n\n\nCode\nPlot.plot({\n  marginBottom: 60,\n  x: {\n    tickRotate: -30,\n  },\n  //y: {\n  //  transform: (d) =&gt; d / 1000,\n  //  label: \"↑ Market value (US dollars, billions)\",\n  //  grid: 5\n  //},\n  facet: {\n      data: filtered,\n      x: \"kjonn\",\n      y: \"kommnr\",\n      marginRight: 80\n    },\n  marks: [\n    Plot.ruleY([0]),\n    \n    Plot.barY(filtered, {\n      x: \"alder\",\n      y: \"n\",\n      sort: { x: \"y\", reverse: true, limit:  100},\n      fill: \"steelblue\"\n    }),\n  ]\n})"
   }
 ]
