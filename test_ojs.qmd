@@ -5,22 +5,19 @@ format:
     code-fold: true
     code-tools: true
 editor: visual
-project:
-  type: website
-  output-dir: docs
 ---
 
 ## Gjennomsnittspersonen
 
 Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.
 
-Det er laget med Quarto, og Observable JS. 
+Det er laget med Quarto, og Observable JS.
 
 ## Running Code
 
-Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker. 
+Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.
 
-I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen. 
+I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.
 
 ```{r echo=FALSE, message=FALSE, warnings=FALSE}
 
@@ -53,7 +50,6 @@ filtered = transpose(data).filter(function(komm) {
 })
 
 ```
-
 
 Hei!
 
