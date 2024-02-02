@@ -4,20 +4,13 @@ format:
   html:
     code-fold: false
     code-tools: true
+
 execute:
   echo: false
 editor: visual
 ---
 
-## Gjennomsnittspersonen
 
-Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.
-
-Det er laget med Quarto, og Observable JS.
-
-Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.
-
-I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilken aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.
 
 ```{r echo=FALSE, message=FALSE, warnings=FALSE}
 
@@ -67,6 +60,18 @@ ojs_define(all_komms = all_komms)
 
 ```
 
+## Gjennomsnittspersonen
+
+Dette er et eksempel på hvordan vi kan distribuere datajournalistikk til lokalaviser.
+
+Det er laget med Quarto, og Observable JS.
+
+Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.
+
+I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilken aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.
+
+
+
 ```{ojs}
 //| output: false
 
@@ -82,7 +87,7 @@ filtered_averages = transpose(data_averages).filter(function(komm) {
 ```
 
 ```{ojs}
-#| .sidebar
+
 
 viewof alder_min = Inputs.range(
   [0, 100], 
@@ -101,7 +106,9 @@ viewof kommuner = Inputs.select(
 
 ```
 
-## Plot
+::: {.panel-tabset}
+
+## Alder
 
 ```{ojs}
 #| echo:false
@@ -136,8 +143,12 @@ Plot.plot({
 })
 ```
 
-## Tabell
+### Tabell
 
 ```{ojs}
 Inputs.table(filtered_averages)
 ```
+
+## Utdanning
+
+:::
