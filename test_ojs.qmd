@@ -17,7 +17,7 @@ Det er laget med Quarto, og Observable JS.
 
 Løsningen gir mulighet for å samhandle med datagrunnlaget, og lage visualiseringer tilpasset den enkelte bruker.
 
-I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilke aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.
+I dette eksempelet er det lastet inn data fra SSB. Ved å bruke menyvelgerne kan man selektere hvilken aldersgruppe man ønsker å visualisere, og hvilke kommuner som skal inngå i sammenligningen.
 
 ```{r echo=FALSE, message=FALSE, warnings=FALSE}
 
@@ -76,8 +76,7 @@ filtered = transpose(data).filter(function(komm) {
 })
 
 filtered_averages = transpose(data_averages).filter(function(komm) {
-  return alder_min < komm.age_mean &&
-         kommuner.includes(komm.kommnavn);
+  return kommuner.includes(komm.kommnavn);
 })
 
 ```
@@ -137,7 +136,7 @@ Plot.plot({
 })
 ```
 
-# Tabell
+## Tabell
 
 ```{ojs}
 Inputs.table(filtered_averages)
